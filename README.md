@@ -18,3 +18,28 @@
 2. 每项实验记录配置、代码版本、随机种子和验证指标。
 3. 训练与推理脚本应保持可复现。
 
+## 数据体检
+
+正式训练前，先检查图片与标签的配对、尺寸、标签ID、损坏文件和类别分布：
+
+```powershell
+python tools/check_dataset.py `
+  --images data/train/images `
+  --masks data/train/labels `
+  --output outputs/dataset_check
+```
+
+工具默认检查官方规则中的 `1024x1024` 图像、标签ID `0-8`，并将ID `4`
+视为忽略类。若正式数据目录或标签定义与此不同，应以赛方随数据发布的说明为准，
+通过 `--expected-size`、`--class-ids` 和 `--ignore-ids` 调整。
+
+输出文件：
+
+- `dataset_summary.json`：总体完整性和各类别像素占比。
+- `dataset_files.csv`：逐文件状态，便于定位缺失、损坏或异常样本。
+
+运行自动化测试：
+
+```powershell
+python -m unittest discover -s tests -v
+```
