@@ -29,7 +29,7 @@ python tools/check_dataset.py `
   --output outputs/dataset_check
 ```
 
-工具默认检查官方规则中的 `1024x1024` 图像、标签ID `0-8`，并将ID `4`
+工具默认检查官方规则中的 `1024x1024` 图像、标签ID `0-8`，并将ID `0`
 视为忽略类。若正式数据目录或标签定义与此不同，应以赛方随数据发布的说明为准，
 通过 `--expected-size`、`--class-ids` 和 `--ignore-ids` 调整。
 

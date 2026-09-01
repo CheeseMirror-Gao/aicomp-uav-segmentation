@@ -92,7 +92,7 @@ def analyze_dataset(
     mask_root: Path,
     expected_size: tuple[int, int] | None = (1024, 1024),
     allowed_class_ids: Sequence[int] = DEFAULT_CLASS_IDS,
-    ignore_class_ids: Sequence[int] = (4,),
+    ignore_class_ids: Sequence[int] = (0,),
 ) -> tuple[dict[str, object], list[FileRecord]]:
     """Inspect a dataset and return a JSON-friendly summary plus per-file rows."""
     image_root = image_root.resolve()
@@ -299,8 +299,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--ignore-ids",
         type=parse_id_list,
-        default=(4,),
-        help="Metric-ignore label IDs (default: 4)",
+        default=(0,),
+        help="Metric-ignore label IDs (default: 0)",
     )
     return parser
 
