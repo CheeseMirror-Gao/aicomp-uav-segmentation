@@ -134,7 +134,7 @@ def main() -> None:
             scaler.update()
             scheduler.step()
             running_loss += float(loss.detach())
-            progress.set_postfix(loss=f"{float(loss):.4f}")
+            progress.set_postfix(loss=f"{float(loss.detach()):.4f}")
 
         metrics = validate(model, val_loader, device, args.num_classes, args.ignore_index)
         metrics.update(epoch=epoch, train_loss=running_loss / max(1, len(train_loader)))
@@ -161,4 +161,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
