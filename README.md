@@ -43,3 +43,39 @@ python tools/check_dataset.py `
 ```powershell
 python -m unittest discover -s tests -v
 ```
+
+## SegFormer-B0 基线
+
+训练环境使用 Python 3.12 和 GPU 版 PyTorch。数据检查环境不必安装训练依赖。
+
+```bash
+python -m pip install -r requirements-train.txt
+```
+
+用示例数据进行一次冒烟训练（首次运行会下载公开的 `nvidia/mit-b0` 权重）：
+
+```bash
+python scripts/train.py \
+  --images data/Examples/Examples/images \
+  --masks data/Examples/Examples/masks \
+  --output outputs/b0_smoke \
+  --epochs 2 \
+  --batch-size 2 \
+  --crop-size 512
+```
+
+输出包括 `best.pt`、`last.pt`、`metrics.jsonl` 和完整运行配置。类别 `0` 不参与损失与
+mIoU，类别 `1-8` 参与评分。当前随机划分只用于跑通流程；正式数据到手后应按来源或
+场景划分验证集，避免相邻 patch 泄漏。
+
+生成预测掩码：
+
+```bash
+python scripts/predict.py \
+  --images data/Examples/Examples/images \
+  --checkpoint outputs/b0_smoke/best.pt \
+  --output outputs/b0_smoke/predictions
+```
+
+AutoDL 上必须将仓库、数据、模型缓存、权重和日志放在 `/root/autodl-tmp/aicomp/`，
+正式长训练使用 `screen` 并重定向日志，避免 SSH 断开导致训练终止。
